@@ -67,12 +67,17 @@ class Blockchain {
            if(self.chain.length > 0){ // We are not dealing with the Genesis Block. Lets populate the previousBlockHash..
                block.previousBlockHash = self.chain[self.chain.length - 1].hash;
            }
-           block.time = new Date().getTime().toString().slice(0, -3);
-           block.height = self.chain.length;
-           block.hash = SHA256(JSON.stringify(block)).toString();
-           self.chain.push(block);
-           self.height++;
-           resolve(block);
+           let chainErrors = await this.validateChain();
+           if(chainErrors.length == 0){
+               block.time = new Date().getTime().toString().slice(0, -3);
+               block.height = self.chain.length;
+               block.hash = SHA256(JSON.stringify(block)).toString();
+               self.chain.push(block);
+               self.height++;
+               resolve(block);
+           }else{
+               reject("Error. Unable to add Block");
+           }
         });
     }
 
@@ -201,10 +206,11 @@ class Blockchain {
                     errorLog.push(`Block at height ${chainElement.height} and hash ${chainElement.hash} does not check with previousBlockHash`);
                 }
             }
+            console.log(JSON.stringify(errorLog));
             if(errorLog.length > 0){
                 reject(errorLog);
             }else{
-                resolve("The chain is valid!")
+                resolve(errorLog)
             }
         });
     }
