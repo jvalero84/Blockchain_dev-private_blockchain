@@ -40,8 +40,10 @@ class Block {
         return new Promise((resolve, reject) => {
             // Save in auxiliary variable the current block hash
                let originalHash = self.hash;
-            // Recalculate the hash of the Block
-            let recalculatedHash = SHA256(JSON.stringify(self)).toString();
+            // Recalculate the hash of the Block. We have to empty the hash from the block in order to recalculate it, otherwise it won't match!
+            let blockCopy = {...self};
+            blockCopy.hash = null;
+            let recalculatedHash = SHA256(JSON.stringify(blockCopy)).toString();
             // Comparing if the hashes changed
             if (originalHash !== recalculatedHash) {
                 // Returning the Block is not valid

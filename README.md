@@ -10,3 +10,5 @@ Test results' screenshots
      ![Request: http://localhost:8000/submitstar](./screenshots/SubmitStar.png)
 5. Use GET call to retrieve starts owned by a particular address
     ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](./screenshots/GetStarsByWalletAddress.png)
+6. Create an endpoint that will trigger the execution of validateChain()
+    ![Request: http://localhost:8000/validateChain](./screenshots/validateChain.png)
